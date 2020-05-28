@@ -1,32 +1,37 @@
-import random
-from sys import exit
+from sys import exit,argv
+import tkinter as tk
+
 white=[]
 blue=[]
 yellow=[]
 green=[]
 orange=[]
 red=[]
+sides=[white,blue,yellow,green,orange,red]
+argv=argv[1:]
 
 # Entering data
 def entry():
-    print("Enter values of your rubiks cube according to given Image1 and Image2:-")
-    white=input("White >> ").split(" ")
-    blue=input("blue >> ").split(" ")
-    yellow=input("yellow >> ").split(" ")
-    green=input("green >> ").split(" ")
-    orange=input("ornage >> ").split(" ")
-    red=input("red >> ").split(" ")
-    print("\n(Caution! Move each colour shown in only clock wise direction)")
-    return white,blue,yellow,green,orange,red
-white,blue,yellow,green,orange,red=entry()
-sides=[white,blue,yellow,green,orange,red]
+    global white,blue,yellow,green,orange,red,sides
+    j=0
+    for i in range(0,54):
+        if i%9==0 and i!=0:
+            j+=1
+        sides[j].append(argv[i])
+entry()
+
+
 
 # copies real rotation of rubiks cube in lists of every side
+result1=[]
 numbers=1
+result1.append('(Caution! Move each colour shown in only clock wise direction)')
+result1.append('Starting to Solve Rubik\'s cube:-')
+
 def rotate(colour):
-    global numbers
+    global numbers,result1
     if colour=='w':
-        print(f'{numbers}. White     |')
+        result1.append(f'{numbers}. White')
         numbers+=1
         rough=white[0]
         white[0]=white[6]
@@ -55,7 +60,7 @@ def rotate(colour):
         orange[6]=rough
 
     elif colour=='b':
-        print(f'{numbers}. Blue      |')
+        result1.append(f'{numbers}. Blue')
         numbers+=1
         rough=blue[0]
         blue[0]=blue[6]
@@ -84,7 +89,7 @@ def rotate(colour):
         orange[8]=rough
 
     elif colour=='y':
-        print(f'{numbers}. Yellow    |')
+        result1.append(f'{numbers}. Yellow')
         numbers+=1
         rough=yellow[0]
         yellow[0]=yellow[6]
@@ -113,7 +118,7 @@ def rotate(colour):
         blue[8]=rough
 
     elif colour=='g':
-        print(f'{numbers}. Green     |')
+        result1.append(f'{numbers}. Green')
         numbers+=1
         rough=green[0]
         green[0]=green[6]
@@ -142,7 +147,7 @@ def rotate(colour):
         yellow[0]=rough
 
     elif colour=='o':
-        print(f'{numbers}. Orange    |')
+        result1.append(f'{numbers}. Orange')
         numbers+=1
         rough=orange[0]
         orange[0]=orange[6]
@@ -171,7 +176,7 @@ def rotate(colour):
         green[2]=rough
 
     elif colour=='r':
-        print(f'{numbers}. Red       |')
+        result1.append(f'{numbers}. Red')
         numbers+=1
         rough=red[0]
         red[0]=red[6]
@@ -201,6 +206,8 @@ def rotate(colour):
     
 # algorithm for solving Rubiks cube layer by layer are called as and when they are required
 def white_corner1(x,y):
+    global result1
+    result1.append(" ")
     rotate('y')
     rotate('y')
     rotate(x)
@@ -218,9 +225,10 @@ def white_corner1(x,y):
     rotate(x)
     rotate(x)
     rotate(x)
-    print("\n")
 
-def white_corner2(x,y):                              
+def white_corner2(x,y):
+    global result1
+    result1.append(" ")                           
     rotate(x)
     rotate(x)
     rotate(x)
@@ -240,9 +248,10 @@ def white_corner2(x,y):
     rotate(y)
     rotate(y)
     rotate(y)
-    print("\n")
 
 def white_corner3(x,y):
+    global result1
+    result1.append(" ")
     rotate(x)
     rotate('y')
     if (x=='b' and y=='o') or (x=='g' and y=='r') or (x=='o' and y=='g') or (x=='r' and y=='b'):
@@ -260,9 +269,10 @@ def white_corner3(x,y):
     if (x=='b' and y!='r') or (x=='g' and y!='o') or (x=='o' and y!='b') or (x=='r' and y!='g'):
         rotate('y')
     rotate(y)
-    print("\n")
 
 def white_corner4(x,y):
+    global result1
+    result1.append(" ")
     if (x=='b' and (y=='b' or y=='r')) or (x=='g' and (y=='g' or y=='o')) or (x=='o' and (y=='b' or y=='o')) or (x=='r' and (y=='r' or y=='b')):
         rotate('y')
         rotate('y')
@@ -274,9 +284,10 @@ def white_corner4(x,y):
     rotate(y)
     rotate(y)
     rotate(y)
-    print("\n")
 
 def white_corner5(x,y):
+    global result1
+    result1.append(" ")
     if (x=='b' and (y=='o' or y=='b')) or (x=='g' and (y=='r' or y=='g')) or (x=='o' and (y=='o' or y=='g')) or (x=='r' and (y=='b' or y=='r')):
         rotate('y')
         if y=='o' or y=='r' or y=='g' or y=='b':
@@ -288,9 +299,10 @@ def white_corner5(x,y):
     if (x=='b' and y!='g') or (x=='g' and y!='b') or (x=='o' and y!='r') or (x=='r' and y!='o'):
         rotate('y')
     rotate(y)
-    print("\n")
 
 def white_corner6(a,b,x,y):
+    global result1
+    result1.append(" ")
     rotate(x)
     rotate('y')
     if (a=='bo' and b==6) or (a=='rb' and b==0) or (a=='gr' and b==2) or (a=='og' and b==8):
@@ -309,9 +321,9 @@ def white_corner6(a,b,x,y):
     rotate(y)
     rotate(y)
     rotate(y)
-    print("\n")
 
 def mid_layer1(x,y,z):
+    global result1
     if (x==green and y!='b') or (x==orange and y!='r') or (x==red and y!='o') or (x==blue and y!='g'):
         rotate('y')
         if (x==green and (y=='r' or y=='g')) or (x==orange and (y=='g' or y=='o')) or (x==red and (y=='b' or y=='r')) or (x==blue and (y=='o' or y=='b')):
@@ -342,9 +354,10 @@ def mid_layer1(x,y,z):
     if (y=='o' and z=='b') or (y=='b' and z=='r') or (y=='r' and z=='g') or (y=='g' and z=='o'):
         rotate(z)
         rotate(z)
-    print("\n")
+    result1.append(" ")
 
 def mid_layer2(a,b,c,d):
+    global result1
     if a!=c or b!=d:
         rotate(c)
         if (c=='b' and d=='r') or (c=='r' and d=='g') or (c=='g' and d=='o') or (c=='o' and d=='b'):
@@ -391,9 +404,11 @@ def mid_layer2(a,b,c,d):
         rotate('y')
         rotate('y')
         rotate(a)
-        print("\n")
+        result1.append(" ")
 
 def yellow_cross1(a,b):
+    global result1
+    result1.append(" ")
     rotate(a)
     rotate('y')
     rotate(b)
@@ -406,9 +421,10 @@ def yellow_cross1(a,b):
     rotate(a)
     rotate(a)
     rotate(a)
-    print("\n")
 
 def yellow_cross2(a):
+    global result1
+    result1.append(" ")
     rotate(a)
     rotate('y')
     rotate(a)
@@ -421,9 +437,10 @@ def yellow_cross2(a):
     rotate(a)
     rotate(a)
     rotate(a)
-    print("\n")
 
 def yellow_corner1(x,y,a,b):
+    global result1
+    result1.append(" ")
     rotate('y')
     if (a==1 and b==3) or (a==3 and b==2) or (a==0 and b==1) or (a==2 and b==0):
         rotate('y')
@@ -454,9 +471,10 @@ def yellow_corner1(x,y,a,b):
         rotate(y)
         rotate(y)
     rotate(y)
-    print("\n")
 
 def yellow_corner2(a,b,c,d):
+    global result1
+    result1.append(" ")
     rotate(a)
     rotate(c)
     rotate(c)
@@ -485,7 +503,6 @@ def yellow_corner2(a,b,c,d):
     rotate(d)
     rotate(d)
     rotate(d)
-    print("\n")
 
 # solving rubiks cube layer by layer:-
 # 1. White Cross
@@ -495,7 +512,7 @@ def yellow_corner2(a,b,c,d):
 # 5. Yellow Corners
 class White_Cross():
     sides=[white,blue,yellow,green,orange,red]
-
+    global result1
     def enter(self):
         self.edge_peices()
         self.edge_align()
@@ -503,7 +520,9 @@ class White_Cross():
 
     # Function to make plus sign on white side
     def edge_peices(self):
-        print("\nwhite Cross Edge Peices:- \n")
+        result1.append(" ")
+        result1.append("Step 1) white Cross Edge Peices:-")
+        result1.append(" ")
         while 'w'!= white[1] or 'w'!=white[3] or 'w'!=white[5] or 'w'!=white[7]:
             for i in self.sides[1:6]:
                 for j in range(1,8,2):
@@ -646,7 +665,9 @@ class White_Cross():
              
     # Function to align white edge peices
     def edge_align(self):
-        print("\nwhite Cross Edge Align:- \n")
+        result1.append(" ")
+        result1.append("Step 2) white Cross Edge Align:-")
+        result1.append(" ")
         blue[1]+='a'
         red[5]+='a'
         green[7]+='a'
@@ -810,6 +831,7 @@ class White_Cross():
 
 class White_Corner():
     sides=[white,blue,yellow,green,orange,red]
+    global result1
 
     def enter(self):
         self.corner_peices()
@@ -817,7 +839,9 @@ class White_Corner():
 
     # Function to Arrange corner peices on White side    
     def corner_peices(self):
-        print("\nwhite Corners:- \n")
+        result1.append(" ")
+        result1.append("Step 3) white Corners:-")
+        result1.append(" ")
         z=1
         while z<=10:
             z+=1
@@ -1098,6 +1122,7 @@ class Middle_Layer():
     edges=[['o','b'],['b','r'],['r','g'],['g','o']]
     edges1=['',green,'',orange,'',red,'',blue]
     edges2=[[orange,blue],[blue,red],[red,green],[green,orange]]
+    global result1
 
     def enter(self):
         self.middle_peices()
@@ -1105,7 +1130,9 @@ class Middle_Layer():
 
     # Functin to arrange Middle Layer on the Rubiks Cube     
     def middle_peices(self):
-        print("\nMiddle Layer:-\n")
+        result1.append(" ")
+        result1.append("Step 4) Middle Layer:-")
+        result1.append(" ")
         zz=0
         while zz<10:
             zz+=1
@@ -1163,11 +1190,12 @@ class Middle_Layer():
                     if j[0][a]==i[1]:
                         if j[1][b]==i[0]:
                             mid_layer2(i[0],i[1],d,c)
-       
+
 class Yellow_Cross():
     edges=[1,7]
     edges1=[3,5]
     edges2=[[orange,5,'o'],[blue,7,'b'],[red,3,'r'],[green,1,'g']]
+    global result1
 
     def enter(self):
         self.edge_peices()
@@ -1176,7 +1204,9 @@ class Yellow_Cross():
 
     # Function to Create Plus Sign on Yellow Side    
     def edge_peices(self):
-        print("\nYellow Cross Edge Peices:- \n")
+        result1.append(" ")
+        result1.append("Step 5) Yellow Cross Edge Peices:-")
+        result1.append(" ")
         if yellow[1]!='y' and yellow[3]!='y' and yellow[5]!='y' and yellow[7]!='y':
             yellow_cross1('o','b')
         if (yellow[1]=='y' and yellow[7]=='y' and yellow[5]!='y' and yellow[3]!='y') or (yellow[5]=='y' and yellow[3]=='y' and yellow[1]!='y' and yellow[7]!='y'):
@@ -1200,7 +1230,9 @@ class Yellow_Cross():
     
     # Function to align edge peices of yellow side
     def edge_align(self):
-        print("\nYellow Cross Edge Align:- \n")
+        result1.append(" ")
+        result1.append("Step 6) Yellow Cross Edge Peices:-")
+        result1.append(" ")
         count=0
         while count<2:
             count=0
@@ -1230,6 +1262,7 @@ class Yellow_Corner():
     result=[]
     edges=[[1,0,2,3],[3,1,0,2],[0,2,3,1],[2,3,1,0]]
     edges1=[['o','r'],['r','o'],['g','b'],['b','g']]
+    global result1
 
     def enter(self):
         self.corner_peices()
@@ -1238,7 +1271,9 @@ class Yellow_Corner():
 
     # Function to arrange Corner peices of yellow side
     def corner_peices(self):
-        print("\nYellow corner peices:- \n")
+        result1.append(" ")
+        result1.append("Step 7) Yellow Corner Peices:-")
+        result1.append(" ")
         for zzz in range(0,4):
             first=[]
             first+=[self.corner1[zzz][0][self.corner2[zzz][0]],self.corner1[zzz][1][self.corner2[zzz][1]],self.corner1[zzz][2][self.corner2[zzz][2]]]
@@ -1326,7 +1361,9 @@ class Yellow_Corner():
 
     # Function to align corner peices on yellow side
     def corner_align(self):
-        print("\nYellow corner align:- \n")
+        result1.append(" ")
+        result1.append("Step 8) Yellow Corner Align:-")
+        result1.append(" ")
         sides=[blue,orange,green,red,yellow,yellow,yellow,yellow]
         sides1=[[6,8],[2,8],[2,0],[6,0],[0,2],[0,6],[2,8],[6,8]]
         sides2=['y','y','y','y','g','o','r','b']
@@ -1377,28 +1414,38 @@ class Yellow_Corner():
 
 # Class to finish the solving of rubiks cube
 class Finish():
-    white=['w','w','w','w','w','w','w','w','w']
-    blue=['b','b','b','b','b','b','b','b','b']
-    yellow=['y','y','y','y','y','y','y','y','y']
-    green=['g','g','g','g','g','g','g','g','g']
-    orange=['o','o','o','o','o','o','o','o','o']
-    red=['r','r','r','r','r','r','r','r','r']
+    global result1
 
     def enter(self):
-        print('Your Rubiks Cube is solved:-')
-        print(self.white)
-        print(self.blue)
-        print(self.yellow)
-        print(self.green)
-        print(self.orange)
-        print(self.red)
-        print("\nQuit??? YES/NO")
-        a=input(">")
-        if a=="Yes":
-            exit(1)
-        else:
-            print("Nothing Is Left to do so I am Quiting")
-            b=input("")
+        result1.append(" ")
+        result1.append("Your Rubiks Cube is solved!!!!")
+
+        window=tk.Tk()
+        window.title("Result!!!!")
+        window.geometry("325x370")
+
+        r = tk.Text(window, height = 20, width=40)
+        r.grid(column = 1, row = 1)
+
+        def q():
+            quit(1)
+
+        
+        l1=tk.Label(window,text=' ')
+        l1.grid(row=2,column=2)
+        l2=tk.Label(window,text=' ')
+        l2.grid(row=3,column=2)
+
+
+        b=tk.Button(window,text='Ok',command=q)
+        b.grid(column = 1, row = 2, rowspan = 2)
+
+        for i in result1:
+            r.insert(tk.END,f'{i} \n')
+        r.config(state='disable')
+
+        window.mainloop()
+        
 
 # Class to run the all other classes sequentially
 class Engine():
@@ -1412,6 +1459,7 @@ class Engine():
         }
     def __init__(self,current_stage):
         self.current_stage=current_stage
+        
     def begin(self):
         while 1:
             cs=self.stages.get(self.current_stage)
